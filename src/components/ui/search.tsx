@@ -3,24 +3,28 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
-export default function Search({
-  placeholders,
-  onChange,
-  onSubmit,
-}: {
-  placeholders: string[];
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}) {
+const textChangeDelay = 3000;
+const enablePlaceholders = false;
+
+export default function Search({ placeholders }: { placeholders: string[] }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const router = useRouter();
+  const onChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (e) => {
+    console.log("Change");
+  };
+
+  const onSubmit: (e: React.FormEvent<HTMLFormElement>) => void = (e) => {
+    router.push(`/${e.currentTarget.querySelector("input")?.value}`);
+  };
 
   useEffect(() => {
     let interval: any;
     const startAnimation = () => {
       interval = setInterval(() => {
         setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-      }, 1500);
+      }, textChangeDelay);
     };
     startAnimation();
     return () => clearInterval(interval);
@@ -226,35 +230,36 @@ export default function Search({
           <path d="M13 6l6 6" />
         </motion.svg>
       </button>
-
-      <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
-        <AnimatePresence mode="wait">
-          {!value && (
-            <motion.p
-              initial={{
-                y: 5,
-                opacity: 0,
-              }}
-              key={`current-placeholder-${currentPlaceholder}`}
-              animate={{
-                y: 0,
-                opacity: 1,
-              }}
-              exit={{
-                y: -15,
-                opacity: 0,
-              }}
-              transition={{
-                duration: 0.3,
-                ease: "linear",
-              }}
-              className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-12 text-left w-[calc(100%-2rem)] truncate"
-            >
-              {placeholders[currentPlaceholder]}
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
+      {enablePlaceholders && (
+        <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
+          <AnimatePresence mode="wait">
+            {!value && (
+              <motion.p
+                initial={{
+                  y: 5,
+                  opacity: 0,
+                }}
+                key={`current-placeholder-${currentPlaceholder}`}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -15,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: "linear",
+                }}
+                className="dark:text-zinc-500 text-sm sm:text-base font-normal text-neutral-500 pl-4 sm:pl-12 text-left w-[calc(100%-2rem)] truncate"
+              >
+                {placeholders[currentPlaceholder]}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
     </form>
   );
 }
