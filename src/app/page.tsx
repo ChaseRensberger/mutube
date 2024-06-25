@@ -1,4 +1,5 @@
-import Search from "@/components/ui/custom/search";
+"use client";
+import Search from "@/components/ui/search";
 export default function Root() {
   return (
     <main className="p-24">
@@ -7,7 +8,11 @@ export default function Root() {
         <h2 className="font-semibold text-xl">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </h2>
-        {/* <Search /> */}
+        <Search
+          placeholders={["LukeJ", "MrBeast", "Ryan Trahan"]}
+          onChange={() => {}}
+          onSubmit={() => {}}
+        />
       </div>
     </main>
   );
