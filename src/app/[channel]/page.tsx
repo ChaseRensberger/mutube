@@ -1,18 +1,18 @@
 import Image from "next/image";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+interface Video {
+  id: string;
+  title: string;
+  thumbnail: string;
+  views: string;
+  timestamp: string;
+}
 
 const lukej_img_src =
   "https://yt3.googleusercontent.com/NK2CK9qdB6i2S-cmdbpuhm5iHWSH4I2gJuVScABdmI-yWMduh2iR8CtgG34RbeM6Rh8V2aG-=s160-c-k-c0x00ffffff-no-rj";
 
-const VideoList = [
+const VideoList: Video[] = [
   {
     id: "1",
     title: "I spent A Day In 3rd Person!",
@@ -58,7 +58,7 @@ const VideoList = [
 export default function Channel() {
   return (
     <main className="p-12 space-y-8">
-      <div className="flex gap-4">
+      <section className="flex gap-4 w-10/12">
         <Image
           className="rounded-full"
           src={lukej_img_src}
@@ -77,38 +77,48 @@ export default function Channel() {
           </h2>
           <h2>having fun & filming it</h2>
         </div>
-      </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-2xl">New Uploads</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:flex xl:gap-4">
+          {VideoList.map((video) => (
+            <YoutubeVideoCard key={video.id} video={video} />
+          ))}
+        </div>
+      </section>
 
       <section>
-        <h2 className="font-bold text-2xl">New Uploads</h2>
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full max-w-sm"
-        >
-          <CarouselContent>
-            {VideoList.slice(0, 5).map((video, index) => (
-              <CarouselItem
-                key={video.id}
-                className="md:basis-1/2 lg:basis-1/3"
-              >
-                <div className="p-1">
-                  <Card>
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
-                      <span className="text-3xl font-semibold">
-                        {index + 1}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <h2 className="font-bold text-2xl">Analytics</h2>
       </section>
     </main>
+  );
+}
+
+interface YoutubeVideoCardProps {
+  video: Video;
+}
+
+function YoutubeVideoCard({ video }: YoutubeVideoCardProps) {
+  return (
+    <div className="w-[246px]">
+      <Image
+        src={video.thumbnail}
+        alt={video.title}
+        width={246}
+        height={138}
+        objectFit="cover"
+        className="rounded-lg"
+      />
+      <h2 className="font-bold">{video.title}</h2>
+      <div className="text-gray-500 text-sm">
+        <h3>LukeJ</h3>
+        <div className="flex gap-1">
+          <span>{video.views} views</span>
+          <span>•</span>
+          <span>{video.timestamp}</span>
+        </div>
+      </div>
+    </div>
   );
 }
