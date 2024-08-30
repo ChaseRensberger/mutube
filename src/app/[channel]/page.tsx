@@ -1,5 +1,25 @@
+"use client";
 import Image from "next/image";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { Line, LineChart, CartesianGrid, XAxis } from "recharts";
+
+const chartConfig = {
+  desktop: {
+    label: "LukeJ",
+    color: "#f87171",
+  },
+  mobile: {
+    label: "Koolaid",
+    color: "#60a5fa",
+  },
+} satisfies ChartConfig;
 
 interface Video {
   id: string;
@@ -8,6 +28,15 @@ interface Video {
   views: string;
   timestamp: string;
 }
+
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
 
 const lukej_img_src =
   "https://yt3.googleusercontent.com/NK2CK9qdB6i2S-cmdbpuhm5iHWSH4I2gJuVScABdmI-yWMduh2iR8CtgG34RbeM6Rh8V2aG-=s160-c-k-c0x00ffffff-no-rj";
@@ -88,8 +117,24 @@ export default function Channel() {
         </div>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-4">
         <h2 className="font-bold text-2xl">Analytics</h2>
+        <ChartContainer config={chartConfig} className="h-48 w-full">
+          <LineChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Line dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+            <Line dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+          </LineChart>
+        </ChartContainer>
       </section>
     </main>
   );
