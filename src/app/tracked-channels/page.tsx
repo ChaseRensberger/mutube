@@ -2,6 +2,8 @@ import ChannelRow from "@/components/channel-row";
 import { YoutubeChannel } from "@/types";
 import AddChannelForm from "@/components/add-channel-form";
 
+export const revalidate = 10;
+
 export default async function TrackedChannels() {
   const response = await fetch("https://horizon.studioj.mov/tracked-channel");
   const channels: { ChannelId: string; ChannelName: string }[] =
