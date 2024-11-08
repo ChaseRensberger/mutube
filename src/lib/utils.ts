@@ -44,7 +44,7 @@ export function formatViewCount(views: number): string {
   return views.toString();
 }
 
-export function shortenTitle(title: string, maxLength: number = 40): string {
+export function shortenTitle(title: string, maxLength: number = 50): string {
   return title.length > maxLength
     ? title.substring(0, maxLength) + "..."
     : title;
