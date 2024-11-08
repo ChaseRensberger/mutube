@@ -1,6 +1,6 @@
 import ChannelRow from "@/components/channel-row";
 import { YoutubeChannel } from "@/types";
-import AddChannelForm from "@/components/add-channel-form";
+// import AddChannelForm from "@/components/add-channel-form";
 
 export const revalidate = 10;
 
@@ -18,7 +18,7 @@ export default async function TrackedChannels() {
       {trackedChannels.map((channel) => (
         <ChannelRow key={channel.id} channel={channel} />
       ))}
-      <AddChannelForm />
+      {/* <AddChannelForm /> */}
     </main>
   );
 }

@@ -4,6 +4,7 @@ export interface YoutubeVideo {
   link: string;
   thumbnail: string;
   published: string;
+  views: number;
 }
 
 export interface YoutubeChannel {
