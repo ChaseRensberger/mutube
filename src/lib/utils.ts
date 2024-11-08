@@ -2,6 +2,11 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { parseStringPromise } from "xml2js";
 import { YoutubeVideo } from "@/types";
+// import Replicate from "replicate";
+
+// const replicate = new Replicate({
+//   auth: process.env.REPLICATE_API_TOKEN,
+// });
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -64,3 +69,19 @@ export async function isShort(id: string): Promise<boolean> {
 
   return response.status !== 302 && response.status !== 404;
 }
+
+// export async function* streamLlamaResponse(videoTitle: string, prompt: string) {
+//   const response = await replicate.predictions.create({
+//     model: "meta/meta-llama-3-8b-instruct",
+//     input: {
+//       prompt: `Video Title: ${videoTitle}\n\nUser: ${prompt}\n\nAssistant:`,
+//       max_new_tokens: 512,
+//       stream: true,
+//     },
+//     stream: true,
+//   });
+
+//   for await (const event of response.output) {
+//     yield event;
+//   }
+// }
