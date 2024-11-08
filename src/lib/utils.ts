@@ -44,6 +44,12 @@ export function formatViewCount(views: number): string {
   return views.toString();
 }
 
+export function shortenTitle(title: string, maxLength: number = 40): string {
+  return title.length > maxLength
+    ? title.substring(0, maxLength) + "..."
+    : title;
+}
+
 export async function isShort(id: string): Promise<boolean> {
   const response = await fetch(`https://www.youtube.com/shorts/${id}`, {
     redirect: "manual",

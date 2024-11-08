@@ -1,7 +1,7 @@
 import { YoutubeVideo } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { formatViewCount } from "@/lib/utils";
+import { formatViewCount, shortenTitle } from "@/lib/utils";
 
 interface YoutubeVideoCardProps {
   video: YoutubeVideo;
@@ -20,8 +20,8 @@ export default function YoutubeVideoCard({ video }: YoutubeVideoCardProps) {
           className="rounded-lg"
         />
       </Link>
-      <Link href={video.link} className="font-semibold">
-        {video.title}
+      <Link href={video.link} className="font-semibold" title={video.title}>
+        {shortenTitle(video.title)}
       </Link>
       <div>
         {video.published} • {formatViewCount(video.views)}{" "}

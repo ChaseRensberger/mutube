@@ -18,9 +18,11 @@ export default async function TrackedChannels() {
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Channels</h1>
-      {trackedChannels.map((channel) => (
-        <ChannelRow key={channel.id} channel={channel} />
-      ))}
+      <div className="flex flex-col gap-4">
+        {trackedChannels.map((channel) => (
+          <ChannelRow key={channel.id} channel={channel} />
+        ))}
+      </div>
       {/* <AddChannelForm /> */}
     </main>
   );
