@@ -6,9 +6,12 @@ export const revalidate = 10;
 
 export default async function TrackedChannels() {
   const response = await fetch("https://horizon.studioj.mov/tracked-channel");
-  const channels: { ChannelId: string; ChannelName: string }[] =
-    await response.json();
-  const trackedChannels: YoutubeChannel[] = channels.map((channel) => ({
+  const channelsData = await response.json();
+  if (!Array.isArray(channelsData)) {
+    console.error("Expected an array but got:", channelsData);
+    return <div>Error loading channels</div>;
+  }
+  const trackedChannels: YoutubeChannel[] = channelsData.map((channel) => ({
     id: channel.ChannelId,
     name: channel.ChannelName,
   }));
