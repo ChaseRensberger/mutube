@@ -5,7 +5,7 @@ import { YoutubeChannel } from "@/types";
 export const revalidate = 10;
 
 export default async function TrackedChannels() {
-  const response = await fetch("https://horizon.studioj.mov/tracked-channel");
+  const response = await fetch("https://horizon.studioj.mov/tracked-channels");
   const channelsData = await response.json();
   if (!Array.isArray(channelsData)) {
     console.error("Expected an array but got:", channelsData);
