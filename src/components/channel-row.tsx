@@ -1,7 +1,6 @@
 import { YoutubeChannel } from "@/types";
 import YoutubeVideoCard from "./youtube-video-card";
 import { fetchChannelVideos } from "@/lib/utils";
-import { isShort } from "@/lib/utils";
 
 interface ChannelRowProps {
   channel: YoutubeChannel;
