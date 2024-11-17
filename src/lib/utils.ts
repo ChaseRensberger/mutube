@@ -12,7 +12,8 @@ export async function fetchChannelVideos(
   maxResults: number = 10
 ): Promise<YoutubeVideo[]> {
   const response = await fetch(
-    `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+    `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
+    { cache: "no-store" }
   );
   const xmlData = await response.text();
   const result = await parseStringPromise(xmlData);
