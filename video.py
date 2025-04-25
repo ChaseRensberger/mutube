@@ -1,7 +1,8 @@
 import requests
-
-EXAMPLE_SHORT_URL = "https://www.youtube.com/shorts/uQj5O4GTWtA"
-EXAMPLE_VIDEO_URL = "https://www.youtube.com/watch?v=gGQlY9NbLaI"
+from auth import initialize_youtube_client
+from rich import print
+import os
+from dotenv import load_dotenv
 
 class Video:
     def __init__(self, video_id, title):
@@ -24,6 +25,13 @@ def get_video_statistics(youtube, video_id):
     response = request.execute()
     return response
 
+def get_channel_id_from_video_id(youtube, video_id):
+    request = youtube.videos().list(
+        part="snippet",
+        id=video_id
+    )
+    response = request.execute()
+    return response["items"][0]["snippet"]["channelId"]
 
 def is_short(video_id):
     short_url = f"https://www.youtube.com/shorts/{video_id}"
@@ -40,5 +48,27 @@ def is_short(video_id):
     except Exception:
         return False
     
+
+def find_nearby_videos(youtube, video_id):
+    channel_id = get_channel_id_from_video_id(youtube, video_id)
+    print(f"Channel ID: {channel_id}")
+
+    video_snippet = get_video_snippet(youtube, video_id)
+    video_published_at = video_snippet["items"][0]["snippet"]["publishedAt"]
+    print(f"Video published at: {video_published_at}")
+
+    request = youtube.search().list(
+        part="snippet",
+        channelId=channel_id,
+        type="video",
+        order="date",
+        maxResults=9,
+        publishedBefore=video_published_at
+    )
+    response = request.execute()
+    return response
+    
 if __name__ == "__main__":
-    print(is_short("uQj5O4GTWtA"))
+    youtube = initialize_youtube_client()
+    load_dotenv()
+    print(find_nearby_videos(youtube, os.getenv("GEOGUESSR_VIDEO_ID")))
