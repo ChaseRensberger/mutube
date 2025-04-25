@@ -58,7 +58,14 @@ def find_nearby_videos(youtube, video_id):
         publishedBefore=video_published_at
     )
     response = request.execute()
-    videos = [video for video in response["items"] if not is_short(video["id"]["videoId"])][:10]
+    num_videos = 0
+    videos = []
+    for video in response["items"]:
+        if not is_short(video["id"]["videoId"]):
+            num_videos += 1
+            videos.append(video)
+            if num_videos >= 10:
+                break
     
     for video in videos:
         video_id = video["id"]["videoId"]
