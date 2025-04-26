@@ -1,14 +1,19 @@
 
 from auth import initialize_youtube_client
-from dotenv import load_dotenv
-from utils import console, format_number, decode_html_entities, format_date
+from utils import console, format_number, decode_html_entities, format_date, parse_youtube_url
 from rich.table import Table
 from video import find_nearby_videos
-
+import sys
 if __name__ == "__main__":
+
+    if len(sys.argv) < 2:
+        console.print("[red]Error: Please provide a YouTube URL or video ID[/red]")
+        console.print("Usage: mutube <youtube_url>")
+        sys.exit(1)
+    
+    url = sys.argv[1]
+    video_id = parse_youtube_url(url)
     youtube = initialize_youtube_client()
-    load_dotenv()
-    video_id = "P53x2ieaImw"
 
     videos = find_nearby_videos(youtube, video_id)
     sorted_videos = sorted(videos, key=lambda x: int(x["statistics"]["viewCount"]), reverse=True)
