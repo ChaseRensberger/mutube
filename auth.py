@@ -15,11 +15,3 @@ def initialize_youtube_client():
         api_service_name, api_version, developerKey=os.getenv("YOUTUBE_API_KEY"))
     
     return youtube
-
-    # request = youtube.channels().list(
-    #     part="snippet"
-    # )
-    # response = request.execute()
-
-    # print(response)
-

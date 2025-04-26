@@ -1,8 +1,4 @@
 import requests
-from auth import initialize_youtube_client
-from rich import print
-import os
-from dotenv import load_dotenv
 
 def get_video_snippet(youtube, video_id):
     request = youtube.videos().list(
@@ -76,36 +72,3 @@ def find_nearby_videos(youtube, video_id):
             video["statistics"] = {"viewCount": "0"}
     
     return videos
-
-
-if __name__ == "__main__":
-    youtube = initialize_youtube_client()
-    load_dotenv()
-    video_id = os.getenv("GEOGUESSR_VIDEO_ID")
-    input_video_snippet = get_video_snippet(youtube, video_id)
-    print(f"Computing video ranking for {input_video_snippet['items'][0]['snippet']['title']}...")
-    print()
-
-    videos = find_nearby_videos(youtube, video_id)
-    sorted_videos = sorted(videos, key=lambda x: int(x["statistics"]["viewCount"]), reverse=True)
-    rank = -1
-    for sorted_video_idx in range(len(sorted_videos)):
-        if sorted_videos[sorted_video_idx]["id"]["videoId"] == video_id:
-            rank = sorted_video_idx + 1
-            break
-
-    if rank == -1:
-        print("Error: Video not found in nearby videos")
-        exit()
-
-    print("--------------------------------")
-    print("Output:")
-    print(f"{input_video_snippet['items'][0]['snippet']['title']} is ranked {rank} out of {len(sorted_videos)}")
-    print()
-    print("Nearby videos:")
-    print()
-    for video in sorted_videos:
-        print(video["snippet"]["title"])
-        print(video["statistics"]["viewCount"])
-        print()
-    print("--------------------------------")
